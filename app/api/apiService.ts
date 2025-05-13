@@ -47,126 +47,128 @@ export const mockData = {
   ]
 };
 
-// Local storage keys
-const STORAGE_KEYS = {
-  USER: 'knowledge_plus_user',
-  COURSES: 'knowledge_plus_courses'
-};
-
-// Helper functions
-const getFromStorage = (key: string) => {
-  if (typeof window === 'undefined') return null;
-  const data = localStorage.getItem(key);
-  return data ? JSON.parse(data) : null;
-};
-
-const setToStorage = (key: string, value: any) => {
-  if (typeof window === 'undefined') return;
-  localStorage.setItem(key, JSON.stringify(value));
-};
-
-// Service functions
+// Service functions with improved error handling
 export const authService = {
   login: async (login: string, password: string) => {
-    // Simulate API delay
-    await new Promise(resolve => setTimeout(resolve, 500));
-    
-    // Demo login logic
-    const user = {
-      idUsername: Date.now(),
-      login,
-      idRole: 1
-    };
-    
-    setToStorage(STORAGE_KEYS.USER, user);
-    return user;
+    try {
+      await new Promise(resolve => setTimeout(resolve, 500));
+      const user = { idUsername: Date.now(), login, idRole: 1 };
+      return user;
+    } catch (error) {
+      console.error('Login error:', error);
+      return null;
+    }
   },
 
   register: async (login: string, password: string) => {
-    await new Promise(resolve => setTimeout(resolve, 500));
-    
-    const user = {
-      idUsername: Date.now(),
-      login,
-      idRole: 1
-    };
-    
-    setToStorage(STORAGE_KEYS.USER, user);
-    return user;
+    try {
+      await new Promise(resolve => setTimeout(resolve, 500));
+      const user = { idUsername: Date.now(), login, idRole: 1 };
+      return user;
+    } catch (error) {
+      console.error('Registration error:', error);
+      return null;
+    }
   }
 };
 
 export const courseService = {
   getCourses: async (filters = {}) => {
-    await new Promise(resolve => setTimeout(resolve, 300));
-    
-    let courses = getFromStorage(STORAGE_KEYS.COURSES) || mockData.courses;
-    return courses;
+    try {
+      await new Promise(resolve => setTimeout(resolve, 300));
+      return mockData.courses;
+    } catch (error) {
+      console.error('Get courses error:', error);
+      return [];
+    }
   },
 
   getCourseById: async (id: number) => {
-    await new Promise(resolve => setTimeout(resolve, 300));
-    
-    const courses = getFromStorage(STORAGE_KEYS.COURSES) || mockData.courses;
-    return courses.find(course => course.idDatasOpenCourses === id);
+    try {
+      await new Promise(resolve => setTimeout(resolve, 300));
+      return mockData.courses.find(course => course.idDatasOpenCourses === id) || null;
+    } catch (error) {
+      console.error('Get course by ID error:', error);
+      return null;
+    }
   },
 
   createCourse: async (courseData: any) => {
-    await new Promise(resolve => setTimeout(resolve, 500));
-    
-    const newCourse = {
-      idDatasOpenCourses: Date.now(),
-      ...courseData,
-      createdAt: new Date().toISOString()
-    };
-    
-    const courses = getFromStorage(STORAGE_KEYS.COURSES) || mockData.courses;
-    courses.push(newCourse);
-    setToStorage(STORAGE_KEYS.COURSES, courses);
-    
-    return newCourse;
+    try {
+      await new Promise(resolve => setTimeout(resolve, 500));
+      const newCourse = {
+        idDatasOpenCourses: Date.now(),
+        ...courseData,
+        createdAt: new Date().toISOString()
+      };
+      mockData.courses.push(newCourse);
+      return newCourse;
+    } catch (error) {
+      console.error('Create course error:', error);
+      return null;
+    }
   },
 
   updateCourse: async (id: number, courseData: any) => {
-    await new Promise(resolve => setTimeout(resolve, 500));
-    
-    const courses = getFromStorage(STORAGE_KEYS.COURSES) || mockData.courses;
-    const index = courses.findIndex(course => course.idDatasOpenCourses === id);
-    
-    if (index !== -1) {
-      courses[index] = { ...courses[index], ...courseData };
-      setToStorage(STORAGE_KEYS.COURSES, courses);
-      return courses[index];
+    try {
+      await new Promise(resolve => setTimeout(resolve, 500));
+      const index = mockData.courses.findIndex(course => course.idDatasOpenCourses === id);
+      if (index !== -1) {
+        mockData.courses[index] = { ...mockData.courses[index], ...courseData };
+        return mockData.courses[index];
+      }
+      return null;
+    } catch (error) {
+      console.error('Update course error:', error);
+      return null;
     }
-    
-    throw new Error('Course not found');
   }
 };
 
 export const categoryService = {
   getCategories: async () => {
-    await new Promise(resolve => setTimeout(resolve, 100));
-    return mockData.categories;
+    try {
+      await new Promise(resolve => setTimeout(resolve, 100));
+      return mockData.categories;
+    } catch (error) {
+      console.error('Get categories error:', error);
+      return [];
+    }
   }
 };
 
 export const levelService = {
   getLevels: async () => {
-    await new Promise(resolve => setTimeout(resolve, 100));
-    return mockData.levels;
+    try {
+      await new Promise(resolve => setTimeout(resolve, 100));
+      return mockData.levels;
+    } catch (error) {
+      console.error('Get levels error:', error);
+      return [];
+    }
   }
 };
 
 export const ageService = {
   getAgeRestrictions: async () => {
-    await new Promise(resolve => setTimeout(resolve, 100));
-    return mockData.ageRestrictions;
+    try {
+      await new Promise(resolve => setTimeout(resolve, 100));
+      return mockData.ageRestrictions;
+    } catch (error) {
+      console.error('Get age restrictions error:', error);
+      return [];
+    }
   }
 };
 
 export const monetizationService = {
   getMonetizationTypes: async () => {
-    await new Promise(resolve => setTimeout(resolve, 100));
-    return mockData.monetizationTypes;
+    try {
+      await new Promise(resolve => setTimeout(resolve, 100));
+      return mockData.monetizationTypes;
+    } catch (error) {
+      console.error('Get monetization types error:', error);
+      return [];
+    }
   }
 };

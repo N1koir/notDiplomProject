@@ -31,29 +31,28 @@ export function CourseProvider({ children }: { children: ReactNode }) {
     try {
       setCourseState(prev => ({ ...prev, loading: true, error: null }));
       const data = await courseService.getCourses(filters);
-      setCourseState(prev => ({ ...prev, courses: data, loading: false }));
+      setCourseState(prev => ({ 
+        ...prev, 
+        courses: data || [], 
+        loading: false 
+      }));
     } catch (err: any) {
       setCourseState(prev => ({
         ...prev,
+        courses: [],
         loading: false,
-        error: err.message || 'Failed to fetch courses.'
+        error: 'Failed to fetch courses.'
       }));
     }
   };
 
   const getCourseById = async (id: number) => {
     try {
-      setCourseState(prev => ({ ...prev, loading: true, error: null }));
       const data = await courseService.getCourseById(id);
-      setCourseState(prev => ({ ...prev, loading: false }));
-      return data;
+      return data || null;
     } catch (err: any) {
-      setCourseState(prev => ({
-        ...prev,
-        loading: false,
-        error: err.message || 'Failed to fetch course.'
-      }));
-      throw err;
+      console.error('Error fetching course:', err);
+      return null;
     }
   };
 
@@ -61,19 +60,22 @@ export function CourseProvider({ children }: { children: ReactNode }) {
     try {
       setCourseState(prev => ({ ...prev, loading: true, error: null }));
       const data = await courseService.createCourse(courseData);
-      setCourseState(prev => ({
-        ...prev,
-        courses: [...prev.courses, data],
-        loading: false
-      }));
-      return data;
+      if (data) {
+        setCourseState(prev => ({
+          ...prev,
+          courses: [...prev.courses, data],
+          loading: false
+        }));
+        return data;
+      }
+      throw new Error('Failed to create course');
     } catch (err: any) {
       setCourseState(prev => ({
         ...prev,
         loading: false,
-        error: err.message || 'Failed to create course.'
+        error: 'Failed to create course.'
       }));
-      throw err;
+      return null;
     }
   };
 
@@ -81,21 +83,24 @@ export function CourseProvider({ children }: { children: ReactNode }) {
     try {
       setCourseState(prev => ({ ...prev, loading: true, error: null }));
       const data = await courseService.updateCourse(id, courseData);
-      setCourseState(prev => ({
-        ...prev,
-        courses: prev.courses.map(course => 
-          course.idDatasOpenCourses === id ? data : course
-        ),
-        loading: false
-      }));
-      return data;
+      if (data) {
+        setCourseState(prev => ({
+          ...prev,
+          courses: prev.courses.map(course => 
+            course.idDatasOpenCourses === id ? data : course
+          ),
+          loading: false
+        }));
+        return data;
+      }
+      throw new Error('Failed to update course');
     } catch (err: any) {
       setCourseState(prev => ({
         ...prev,
         loading: false,
-        error: err.message || 'Failed to update course.'
+        error: 'Failed to update course.'
       }));
-      throw err;
+      return null;
     }
   };
 

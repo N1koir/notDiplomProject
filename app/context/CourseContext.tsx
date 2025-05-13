@@ -36,7 +36,7 @@ export function CourseProvider({ children }: { children: ReactNode }) {
       setCourseState(prev => ({
         ...prev,
         loading: false,
-        error: err.response?.data?.message || 'Failed to fetch courses.'
+        error: err.message || 'Failed to fetch courses.'
       }));
     }
   };
@@ -51,7 +51,7 @@ export function CourseProvider({ children }: { children: ReactNode }) {
       setCourseState(prev => ({
         ...prev,
         loading: false,
-        error: err.response?.data?.message || 'Failed to fetch course.'
+        error: err.message || 'Failed to fetch course.'
       }));
       throw err;
     }
@@ -71,7 +71,7 @@ export function CourseProvider({ children }: { children: ReactNode }) {
       setCourseState(prev => ({
         ...prev,
         loading: false,
-        error: err.response?.data?.message || 'Failed to create course.'
+        error: err.message || 'Failed to create course.'
       }));
       throw err;
     }
@@ -93,7 +93,7 @@ export function CourseProvider({ children }: { children: ReactNode }) {
       setCourseState(prev => ({
         ...prev,
         loading: false,
-        error: err.response?.data?.message || 'Failed to update course.'
+        error: err.message || 'Failed to update course.'
       }));
       throw err;
     }

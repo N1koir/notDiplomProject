@@ -25,7 +25,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
@@ -39,7 +39,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         localStorage.removeItem('user');
       }
     }
-    setLoading(false);
   }, []);
 
   const login = async (login: string, password: string) => {
@@ -51,7 +50,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       localStorage.setItem('user', JSON.stringify(userData));
       router.push('/');
     } catch (err: any) {
-      setError(err.response?.data?.message || 'Login failed. Please try again.');
+      setError(err.message || 'Login failed. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -66,7 +65,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       localStorage.setItem('user', JSON.stringify(userData));
       router.push('/');
     } catch (err: any) {
-      setError(err.response?.data?.message || 'Registration failed. Please try again.');
+      setError(err.message || 'Registration failed. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -79,17 +78,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const changePassword = async (newPassword: string) => {
-    if (!user) return;
-    
     try {
       setLoading(true);
       setError(null);
-      await authService.changePassword(user.idUsername, newPassword);
-      // Update user in localStorage with updated info if necessary
-      const updatedUser = { ...user };
-      localStorage.setItem('user', JSON.stringify(updatedUser));
+      // In demo mode, just simulate success
+      await new Promise(resolve => setTimeout(resolve, 500));
+      setError(null);
     } catch (err: any) {
-      setError(err.response?.data?.message || 'Failed to change password. Please try again.');
+      setError(err.message || 'Failed to change password. Please try again.');
     } finally {
       setLoading(false);
     }

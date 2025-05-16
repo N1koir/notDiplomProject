@@ -3,15 +3,7 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
-  images: { unoptimized: true },
-  async rewrites() {
-    return process.env.NODE_ENV === 'development' ? [
-      {
-        source: '/api/:path*',
-        destination: 'http://localhost:5245/api/:path*'
-      }
-    ] : [];
-  }
+  images: { unoptimized: true }
 }
 
-module.exports = nextConfig;
+module.exports = nextConfig

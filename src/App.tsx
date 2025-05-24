@@ -1,14 +1,14 @@
 import { Routes, Route } from 'react-router-dom';
 import { AuthProvider } from '@/app/context/AuthContext';
 import { CourseProvider } from '@/app/context/CourseContext';
-import { ThemeProvider } from './components/theme/ThemeProvider';
-import { Toaster } from './components/ui/toaster';
-import Header from './components/layout/Header';
-import Home from './pages/Home';
-import Courses from './pages/Courses';
-import Course from './pages/Course';
-import CreateCourse from './pages/CreateCourse';
-import Search from './pages/Search';
+import { ThemeProvider } from '@/components/theme/ThemeProvider';
+import { Toaster } from '@/components/ui/toaster';
+import Header from '@/components/layout/Header';
+import Home from '@/pages/Home';
+import Courses from '@/pages/Courses';
+import Course from '@/pages/Course';
+import CreateCourse from '@/pages/CreateCourse';
+import Search from '@/pages/Search';
 
 function App() {
   return (

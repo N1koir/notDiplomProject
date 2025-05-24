@@ -1,6 +1,6 @@
 import { Routes, Route } from 'react-router-dom';
-import { AuthProvider } from './context/AuthContext';
-import { CourseProvider } from './context/CourseContext';
+import { AuthProvider } from '@/app/context/AuthContext';
+import { CourseProvider } from '@/app/context/CourseContext';
 import { ThemeProvider } from './components/theme/ThemeProvider';
 import { Toaster } from './components/ui/toaster';
 import Header from './components/layout/Header';
